@@ -1,0 +1,35 @@
+{
+  "name": "sebabiblio",
+  "version": "1.0.0",
+  "description": "Sistema integral de gesti\u00f3n bibliotecaria portable",
+  "author": "Tu Nombre",
+  "main": "app/main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "electron": "^28.2.3",
+    "electron-builder": "^26.0.12"
+  },
+  "build": {
+    "appId": "com.sebabiblio.app",
+    "productName": "SebaBiblio",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "app/**/*",
+      "db/**/*",
+      "consola/**/*",
+      "build/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": "nsis",
+      "artifactName": "SebaBiblio_Setup.exe"
+    },
+    "publish": []
+  }
+}
