@@ -22,7 +22,7 @@ jobs:
         run: npm install
 
       - name: Build Electron app
-        run: npm run build
+        run: npm run build -- --publish never   # <-- evita publicar en GitHub
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
