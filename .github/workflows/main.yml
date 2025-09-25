@@ -1,24 +1,44 @@
-name: Package Repository
+name: Build SebaBiblio (Windows)
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
 
 jobs:
-  package:
-    runs-on: ubuntu-latest
-
+  build-windows:
+    runs-on: windows-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Create ZIP archive
-        run: |
-          zip -r packaged-app.zip .
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'   # o '20' si preferís
 
-      - name: Upload artifact
+      - name: Cache npm
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Ensure NSIS available (for portable/nsis targets)
+        if: runner.os == 'Windows'
+        run: choco install nsis -y
+
+      - name: Build portable single-exe (x64 + ia32)
+        run: npm run build -- --win portable --x64 --ia32 --publish never
+
+      - name: Build installer (NSIS) (optional)
+        run: npm run build -- --win nsis --x64 --ia32 --publish never
+
+      - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: packaged-app
-          path: packaged-app.zip
+          name: SebaBiblio-builds
+          path: dist/**
