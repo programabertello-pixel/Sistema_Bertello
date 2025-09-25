@@ -1,4 +1,4 @@
-name: Build SebaBiblio
+name: Build Electron App
 
 on:
   push:
@@ -7,25 +7,26 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: 18
 
       - name: Install dependencies
         run: npm install
 
-      - name: Build Electron app
-        run: npm run build -- --publish never   # <-- evita publicar en GitHub
+      - name: Build installer with electron-builder
+        run: |
+          npx electron-builder --win --x64
 
-      - name: Upload build artifacts
+      - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: SebaBiblio
-          path: dist/**
+          name: electron-app
+          path: dist/*
