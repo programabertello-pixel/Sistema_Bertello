@@ -2,7 +2,8 @@
   "name": "sebabiblio",
   "version": "1.0.0",
   "description": "Sistema de Biblioteca Escolar - Sebastián Bertello",
-  "main": "main.js",
+  "author": "Sebastián Bertello",
+  "main": "app/main.js",
   "scripts": {
     "start": "electron .",
     "build": "electron-builder"
